@@ -71,12 +71,42 @@ REST_FRAMEWORK = {
 
 # DRF Spectacular settings for API documentation
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'AgentX Inventory Management API',
-    'DESCRIPTION': 'API for managing inventory, transfers, delivery routes, and agent logs in the AgentX system',
-    'VERSION': '1.0.0',
+    'TITLE': 'AgentX++ Inventory Management API',
+    'DESCRIPTION': 'Comprehensive API for AgentX++ multi-agent inventory management system with 7 AI agents',
+    'VERSION': '2.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,
     'SCHEMA_PATH_PREFIX': '/api/',
+    'TAGS': [
+        {'name': 'Inventory', 'description': 'Basic inventory management'},
+        {'name': 'Agent System', 'description': '7 AI Agents for supply chain automation'},
+        {'name': 'Dashboard', 'description': 'System monitoring and analytics'},
+        {'name': 'Simulation', 'description': 'Agent workflow simulation'},
+    ]
+}
+
+# Celery Configuration (Redis as message broker)
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+# Celery Beat Schedule (for periodic tasks)
+CELERY_BEAT_SCHEDULE = {
+    'system-health-check': {
+        'task': 'core.agent_tasks.periodic_system_health_check',
+        'schedule': 300.0,  # Every 5 minutes
+    },
+    'rebalancer-analysis': {
+        'task': 'core.agent_tasks.rebalancer_agent_task', 
+        'schedule': 1800.0,  # Every 30 minutes
+    },
+    'disruption-monitoring': {
+        'task': 'core.agent_tasks.delay_monitor_agent_task',
+        'schedule': 600.0,  # Every 10 minutes
+    },
 }
 
 ROOT_URLCONF = 'agentx.urls'

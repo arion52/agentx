@@ -11,5 +11,7 @@ router.register(r'logs', AgentLogViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('run-fake-agent/', run_fake_agent)
+    path('run-fake-agent/', run_fake_agent),
+    # Include all agent system endpoints
+    path('', include('core.agent_urls')),
 ]

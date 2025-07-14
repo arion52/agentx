@@ -4,3 +4,27 @@ django-cors-headers==4.6.0
 drf-spectacular==0.28.0
 psycopg2-binary==2.9.10
 dj-database-url==2.3.0
+
+# Background task processing
+celery==5.4.0
+redis==5.2.0
+
+# AI/ML packages (for hackathon simulation)
+openai>=1.0.0
+langchain>=0.3.0
+crewai>=0.80.0
+
+# Computer Vision (YOLO simulation)
+opencv-python>=4.10.0
+ultralytics>=8.3.0
+pillow>=10.0.0
+
+# Graph database (Neo4j simulation)
+neo4j>=5.23.0
+py2neo>=2021.2.4
+
+# Data science and utilities
+numpy>=1.24.0
+pandas>=2.0.0
+requests>=2.31.0
+python-decouple>=3.8
