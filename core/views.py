@@ -259,45 +259,94 @@ def run_fake_agent(request):
     scheduling, and delivery route planning.
     """
     try:
-        # 1. Fake inventory change
-        milk = Inventory.objects.get(product_name="Milk", store_location="Whitefield")
-        milk.quantity -= 5
-        milk.save()
+        # 1. Fake inventory changes for Walmart hackathon
+        milk = Inventory.objects.get(product_name="Great Value Milk", store_location="Walmart Supercenter #1234")
+        eggs = Inventory.objects.get(product_name="Great Value Eggs", store_location="Walmart Supercenter #1234")
+        bread = Inventory.objects.get(product_name="Wonder Bread", store_location="Walmart Supercenter #1234")
 
-        # 2. Create a transfer
+        milk.quantity -= 8  # Simulate drop in milk stock
+        eggs.quantity -= 12 # Simulate drop in eggs stock
+        bread.quantity -= 5 # Simulate drop in bread stock
+        milk.save()
+        eggs.save()
+        bread.save()
+
+        # 2. Create transfers for multiple products
         TransferLog.objects.create(
-            from_store="KR Puram",
-            to_store="Whitefield",
+            from_store="Walmart Distribution Center - Dallas",
+            to_store="Walmart Supercenter #1234",
             product=milk,
-            quantity=10,
-            reason="Stock too low in Whitefield"
+            quantity=20,
+            reason="Restocking Great Value Milk due to high demand (July 4th BBQ)"
+        )
+        TransferLog.objects.create(
+            from_store="Walmart Distribution Center - Dallas",
+            to_store="Walmart Supercenter #1234",
+            product=eggs,
+            quantity=30,
+            reason="Eggs restock for weekend breakfast rush"
+        )
+        TransferLog.objects.create(
+            from_store="Walmart Distribution Center - Dallas",
+            to_store="Walmart Supercenter #1234",
+            product=bread,
+            quantity=15,
+            reason="Wonder Bread restock for sandwich promotion"
         )
 
-        # 3. Create delivery route
+        # 3. Create delivery routes for each product
         DeliveryRoute.objects.create(
-            route_id="milk-transfer-001",
-            start_point="KR Puram",
-            end_point="Whitefield",
+            route_id="milk-dallas-1234-20250714",
+            start_point="Walmart Distribution Center - Dallas",
+            end_point="Walmart Supercenter #1234",
             eta=datetime.now() + timedelta(hours=2),
             status="scheduled",
-            disruption_notes=""
+            disruption_notes="Heavy traffic on I-635 due to construction"
+        )
+        DeliveryRoute.objects.create(
+            route_id="eggs-dallas-1234-20250714",
+            start_point="Walmart Distribution Center - Dallas",
+            end_point="Walmart Supercenter #1234",
+            eta=datetime.now() + timedelta(hours=2, minutes=30),
+            status="scheduled",
+            disruption_notes="Minor delay expected due to rain"
+        )
+        DeliveryRoute.objects.create(
+            route_id="bread-dallas-1234-20250714",
+            start_point="Walmart Distribution Center - Dallas",
+            end_point="Walmart Supercenter #1234",
+            eta=datetime.now() + timedelta(hours=1, minutes=45),
+            status="scheduled",
+            disruption_notes="On time"
         )
 
-        # 4. Agent log
+        # 4. Agent logs for each action
         AgentLog.objects.create(
             agent_name="Rebalancer",
-            action="Moved 10 milk units to Whitefield due to stock drop."
+            action="Moved 20 units of Great Value Milk to Walmart Supercenter #1234 for July 4th BBQ demand."
+        )
+        AgentLog.objects.create(
+            agent_name="Rebalancer",
+            action="Moved 30 units of Great Value Eggs to Walmart Supercenter #1234 for weekend breakfast rush."
+        )
+        AgentLog.objects.create(
+            agent_name="Rebalancer",
+            action="Moved 15 units of Wonder Bread to Walmart Supercenter #1234 for sandwich promotion."
         )
 
-        # 5. Return fake explanation
+        # 5. Return detailed Walmart-style explanation
         return Response({
-            "message": "Transfer completed. ETA 2:40 PM.",
-            "explanation": "10 crates of milk rebalanced from KR Puram to Whitefield due to low stock."
+            "message": "Transfers completed. Milk, eggs, and bread restocked at Walmart Supercenter #1234.",
+            "explanation": (
+                "20 units of Great Value Milk, 30 units of Great Value Eggs, and 15 units of Wonder Bread "
+                "were rebalanced from Dallas Distribution Center to Walmart Supercenter #1234. "
+                "Reasons: July 4th BBQ demand spike, weekend breakfast rush, and sandwich promotion. "
+                "Delivery routes scheduled with minor delays due to traffic and weather."
+            )
         })
-    
     except Inventory.DoesNotExist:
         return Response(
-            {"error": "Milk inventory not found in Whitefield store"},
+            {"error": "Required inventory not found in Walmart Supercenter #1234"},
             status=status.HTTP_400_BAD_REQUEST
         )
     except Exception as e:

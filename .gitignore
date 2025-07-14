@@ -1,1 +1,37 @@
 /.venv
+__pycache__/
+**/__pycache__/
+*.py[cod]
+# Add virtual environment directories
+.venv/
+venv/
+env/
+# Add database files
+*.sqlite3
+*.db
+# Add log files
+*.log
+# Add coverage reports
+.coverage
+.coverage.*
+# Add migrations
+migrations/
+# Add static files
+staticfiles/
+# Add media files
+media/
+# Add IDE specific files
+.idea/
+.vscode/
+# Add Python bytecode files
+*.pyc
+*.pyo
+# Add Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+# Add environment variable files
+.env
+# Add cache directories
+.cache/
+# Add build directories
+build/
+dist/
