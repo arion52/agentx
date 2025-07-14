@@ -1,0 +1,24 @@
+[
+  {
+    "model": "core.inventory",
+    "pk": 1,
+    "fields": {
+      "product_id": "milk-001",
+      "product_name": "Milk",
+      "store_location": "Whitefield",
+      "quantity": 20,
+      "expiry_date": "2025-07-04"
+    }
+  },
+  {
+    "model": "core.inventory",
+    "pk": 2,
+    "fields": {
+      "product_id": "coke-002",
+      "product_name": "Coca-Cola",
+      "store_location": "KR Puram",
+      "quantity": 45,
+      "expiry_date": "2025-07-10"
+    }
+  }
+]
